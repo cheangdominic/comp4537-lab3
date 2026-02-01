@@ -4,24 +4,30 @@ const url = require("url");
 const utils = require("./modules/utils");
 const lang = require("./lang/en/en");
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-const server = http.createServer((req, res) => {
-  const parsedUrl = url.parse(req.url, true);
+class Server {
+  static start() {
+    const server = http.createServer((req, res) => {
+      const parsedUrl = url.parse(req.url, true);
 
-    const name = parsedUrl.query.name;
-    const date = utils.getDate();
+      const name = parsedUrl.query.name || "Guest";
+      const date = utils.getDate();
 
-    const message = `
-      <p style="color:blue;">
-        ${lang.greeting.replace("%1", name)} ${date}
-      </p>
-    `;
+      const message = `
+        <p style="color:blue;">
+          ${lang.greeting.replace("%1", name)} ${date}
+        </p>
+      `;
 
-    res.writeHead(200, { "Content-Type": "text/html" });
-    res.end(message);
-});
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.end(message);
+    });
 
-server.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+    server.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  }
+}
+
+Server.start();
