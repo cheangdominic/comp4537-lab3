@@ -4,14 +4,13 @@ const url = require("url");
 const utils = require("./modules/utils");
 const lang = require("./lang/en/en");
 
-const PORT = process.env.PORT || 3000;
-
 class Server {
+  static PORT = process.env.PORT || 3000;
   static start() {
     const server = http.createServer(Server.handleRequest);
 
-    server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+    server.listen(Server.PORT, () => {
+      console.log(`Server running on port ${Server.PORT}`);
     });
   }
 
@@ -57,9 +56,6 @@ class Server {
       res.end(content);
       return;
     }
-
-    res.writeHead(404);
-    res.end("Route not found");
   }
 }
 
